@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ping Pong Arena - Nouvelle partie</title>
+<link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+<nav>
+<a href="/">Classement</a>
+<a href="/admin/client/player">Liste joueurs</a>
+</nav>
+<section>
+<header>
+<h1>Nouvelle partie</h1>
+</header>
+{% if form.non_field_errors %}<div id="error_message">{{ form.non_field_errors }}</div>{% endif %}
+{% if True or form.team_a %}
+<form action="/newgame" method="post">
+{% csrf_token %}
+<div id="team_1">
+<h2>Équipe nº1</h2>
+{{ form.team_a.errors }}
+{{ form.team_a }}
+</div>
+<div id="team_2">
+<h2>Équipe nº2</h2>
+{{ form.team_b.errors }}
+{{ form.team_b }}
+</div>
+<div id="scores">
+<div id="base">
+{{ form.base.errors }}
+{{ form.base }}
+</div>
+<div id="score_team_1">
+{{ form.score_a.errors }}
+<label for="id_score_a">Score joueur/équipe nº1</label>{{ form.score_a }}
+</div>
+<div id="score_team_2">
+{{ form.score_b.errors }}
+<label for="id_score_b">Score joueur/équipe nº2</label>{{ form.score_b }}
+</div>
+</div>
+<div id="submit"><input type="submit" value="Valider" /></div>
+</form>
+{% else %}
+<p>No player yet...</p>
+{% endif %}
+</section>
+</body>
+</html>

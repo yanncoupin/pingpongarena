@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ping Pong Arena - Classement</title>
+<link rel="stylesheet" href="static/css/main.css" />
+</head>
+<body>
+<header id="head">
+<img src="static/images/rackets.png" /><h1>Ping Pong Arena</h1>
+</header>
+<nav>
+<a href="/admin/client/player">Liste joueurs</a>
+<a href="/newgame">Nouvelle partie</a>
+</nav>
+<section>
+<header>
+<h1>Les champions</h1>
+</header>
+{% if best_players %}
+    <div id="best">
+{% for player in best_players %}
+<div class="champion"><span class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</span><span class="name">{{ player.name }}</span><span class="score"> ({{ player.points }} pt)</span></div>
+{% endfor %}
+    </div>
+    <div id="rest">
+{% for player in rest_players %}
+<div class="player"><span class="rank">{{ forloop.counter|add:3 }}</span><span class="name">{{ player.name }}</span><span class="score"> ({{ player.points }} pt)</span></div>
+{% endfor %}
+</div>
+{% else %}
+<p>Aucun joueur déclaré...</p>
+{% endif %}
+</section>
+</body>
+</html>
