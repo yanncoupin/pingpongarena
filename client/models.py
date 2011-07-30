@@ -20,13 +20,13 @@ class Game(models.Model):
     score_base = models.IntegerField(choices=(('11', '11'), ('21', '21'))) # 11 or 21
 
     def __unicode__(self):
-        return "%s vs. %s" (
-            team_a_1.name if team_a_2 == None else "%s & %s" % (team_a_1.name, team_a_2.name), 
-            team_b_1.name if team_b_2 == None else "%s & %s" % (team_b_1.name, team_b_2.name), 
+        return "%s vs. %s" % (
+            self.team_a_1.name if self.team_a_2 == None else "%s & %s" % (self.team_a_1.name, self.team_a_2.name), 
+            self.team_b_1.name if self.team_b_2 == None else "%s & %s" % (self.team_b_1.name, self.team_b_2.name), 
             )
 
     def isDouble(self):
-        return team_a_2 and team_b_2
+        return self.team_a_2 and self.team_b_2
 
 def computePoints():
     # Select all the games for the last month
