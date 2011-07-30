@@ -43,14 +43,6 @@ def newgame(request):
     )
     
 def game(request, game_id):
-    from django.db import connection, transaction
-    cursor = connection.cursor()
-
-    # Data retrieval operation - no commit required
-    cursor.execute("""SELECT * from auth_user""")
-    row = cursor.fetchone()
-
-    return HttpResponse(row)
     return HttpResponse(Game.objects.get(id=game_id))
 
 def update(request):
