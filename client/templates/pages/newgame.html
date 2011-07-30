@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Ping Pong Arena - Nouvelle partie</title>
-<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="static/css/main.css" />
 </head>
 <body>
 <nav>
@@ -17,12 +17,12 @@
 {% if True or form.team_a %}
 <form action="/newgame" method="post">
 {% csrf_token %}
-<div id="team_1">
+<div id="team_1" class="teams">
 <h2>Équipe nº1</h2>
 {{ form.team_a.errors }}
 {{ form.team_a }}
 </div>
-<div id="team_2">
+<div id="team_2" class="teams">
 <h2>Équipe nº2</h2>
 {{ form.team_b.errors }}
 {{ form.team_b }}
