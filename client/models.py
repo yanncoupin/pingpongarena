@@ -47,13 +47,15 @@ def computePoints():
 
     for game in all_games:
         if game.team_a_2:
-            points = float(game.score_a-game.score_b)/2
+            points = float(game.score_a-game.score_b)/2 #in double, win is divided by 2
+            points += points > 0 and 5 or -5 #bonus for winning
             __setAccPoints(game.team_a_1, game.team_b_1, points)
             __setAccPoints(game.team_a_1, game.team_b_2, points)
             __setAccPoints(game.team_a_2, game.team_b_1, points)
             __setAccPoints(game.team_a_2, game.team_b_2, points)
         else:
             points = game.score_a-game.score_b
+            points += points > 0 and 10 or -10 #bonus for winning
             __setAccPoints(game.team_a_1, game.team_b_1, points)
 
     pp = {}
