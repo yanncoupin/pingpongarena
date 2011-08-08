@@ -32,7 +32,7 @@ class PushButtonMultipleChoice(forms.CheckboxSelectMultiple):
             option_label = conditional_escape(force_unicode(option_label))
             output.append(u'<input%s type="checkbox" name="%s" value="%s"%s><label%s>%s</label>' % (id, name, option_value, option_value in str_values and ' checked="checked"' or '', for_id, option_label))
         output.append(u'</div>')
-        return mark_safe(u'\n'.join(output))
+        return mark_safe(''.join(output))
 
 class PushButtonRadio(forms.Select):
 
@@ -45,7 +45,7 @@ class PushButtonRadio(forms.Select):
             options.append('<input type="radio" name="%s" value="%s" id="%s"%s><label for="%s">%s</label>' % (
                         name, v, id, v == value and ' checked="checked"' or '', id, l))
             counter += 1
-        return mark_safe('<div>%s</div>' % "\n".join(options))
+        return mark_safe('<div>%s</div>' % ''.join(options))
 
 class NewGameForm(forms.Form):
     team_a = forms.ModelMultipleChoiceField(queryset=Player.objects.all().order_by('name'), widget=PushButtonMultipleChoice)
