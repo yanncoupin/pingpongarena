@@ -1,16 +1,21 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
-from client.models import Player, Game, computePoints
+from client.models import *
 import logging
 
 def home(request):
-    all_players = Player.objects.all().order_by('-points')
+    all_players = SingleRanking.objects.exclude(points=None).order_by('-points')
     best_players = all_players[0:3]
     rest_players = all_players[3:]
+    all_teams = DoubleRanking.objects.exclude(points=None).order_by('-points')
+    best_teams = all_teams[0:3]
+    rest_teams = all_teams[3:]
     return render_to_response('pages/index.html', {
         'best_players': best_players,
         'rest_players': rest_players,
+        'best_teams': best_teams,
+        'rest_teams': rest_teams,
     })
 
 def newgame(request):

@@ -1,13 +1,57 @@
+#-*- coding:utf8 -*-
+
 from django.db import models
 from datetime import datetime, timedelta
 
 class Player(models.Model):
     name = models.CharField('name of the player', max_length=100)
     email = models.EmailField()
-    points = models.FloatField('total points of the player')
+
+    class Meta:
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
+
+class SingleRanking(models.Model):
+    player = models.ForeignKey('Player', related_name='player', unique=True)
+    points = models.FloatField(default=None, null=True)
+
+    @staticmethod
+    def findOrCreate(pl):
+        try:
+            return SingleRanking.objects.get(player=pl)
+        except SingleRanking.DoesNotExist:
+            new = SingleRanking(player=pl)
+            new.save()
+            return new
+
+class DoubleRanking(models.Model):
+    first_player = models.ForeignKey('Player', related_name='first_player')
+    second_player = models.ForeignKey('Player', related_name='second_player')
+    points = models.FloatField(default=None, null=True)
+
+    class Meta:
+        unique_together = (('first_player', 'second_player'),)
+
+    def __unicode__(self):
+        names = []
+        names.append(self.first_player.name)
+        names.append(self.second_player.name)
+        names.sort()
+        return u' – '.join(names)
+
+    @staticmethod
+    def findOrCreate(pl_a, pl_b):
+        if pl_a.id > pl_b.id:
+            (pl_a, pl_b) = (pl_b, pl_a)
+
+        try:
+            return DoubleRanking.objects.get(first_player=pl_a, second_player=pl_b)
+        except DoubleRanking.DoesNotExist:
+            new = DoubleRanking(first_player = pl_a, second_player = pl_b)
+            new.save()
+            return new
 
 class Game(models.Model):
     team_a_1 = models.ForeignKey('Player', related_name='team_a_1')
@@ -21,8 +65,8 @@ class Game(models.Model):
 
     def __unicode__(self):
         return "%s vs. %s" % (
-            self.team_a_1.name if self.team_a_2 == None else "%s & %s" % (self.team_a_1.name, self.team_a_2.name), 
-            self.team_b_1.name if self.team_b_2 == None else "%s & %s" % (self.team_b_1.name, self.team_b_2.name), 
+            self.team_a_1.name if self.team_a_2 == None else "%s & %s" % (self.team_a_1.name, self.team_a_2.name),
+            self.team_b_1.name if self.team_b_2 == None else "%s & %s" % (self.team_b_1.name, self.team_b_2.name),
             )
 
     def isDouble(self):
@@ -32,11 +76,10 @@ def computePoints():
     # Select all the games for the last month
     all_games = Game.objects.filter(game_time__gte=datetime.now()-timedelta(days=30))
 
-    all_players = Player.objects.all()
+    single_acc = {}
+    double_acc = {}
 
-    acc = {}
-
-    def __setAccPoints(a, b, p):
+    def __setAccPoints(acc, a, b, p):
         if (a.id > b.id):
             (a, b) = (b, a)
             p = -p
@@ -46,30 +89,56 @@ def computePoints():
         i['c'] += 1
 
     for game in all_games:
-        if game.team_a_2:
-            points = float(game.score_a-game.score_b)/2 #in double, win is divided by 2
-            points += points > 0 and 5 or -5 #bonus for winning
-            __setAccPoints(game.team_a_1, game.team_b_1, points)
-            __setAccPoints(game.team_a_1, game.team_b_2, points)
-            __setAccPoints(game.team_a_2, game.team_b_1, points)
-            __setAccPoints(game.team_a_2, game.team_b_2, points)
+        if game.isDouble():
+            points = game.score_a-game.score_b
+            points += points > 0 and 10 or -10 #bonus for winning
+            __setAccPoints(
+                double_acc,
+                DoubleRanking.findOrCreate(game.team_a_1, game.team_a_2),
+                DoubleRanking.findOrCreate(game.team_b_1, game.team_b_2),
+                points
+            )
         else:
             points = game.score_a-game.score_b
             points += points > 0 and 10 or -10 #bonus for winning
-            __setAccPoints(game.team_a_1, game.team_b_1, points)
+            __setAccPoints(
+                single_acc,
+                SingleRanking.findOrCreate(game.team_a_1),
+                SingleRanking.findOrCreate(game.team_b_1),
+                points
+            )
 
     pp = {}
 
-    for v in acc.itervalues():
-        pp.setdefault(v['a'].id, 0)
-        pp.setdefault(v['b'].id, 0)
-        pp[v['a'].id] += v['s'] / v['c']
-        pp[v['b'].id] -= v['s'] / v['c']
+    for v in single_acc.itervalues():
+        pp.setdefault(v['a'], 0)
+        pp.setdefault(v['b'], 0)
+        pp[v['a']] += v['s'] / v['c']
+        pp[v['b']] -= v['s'] / v['c']
 
-    for player in all_players:
-        player.points = pp.get(player.id, 0.0)
-        player.save()
-        
+    #reset all scores
+    SingleRanking.objects.all().update(points=None)
+
+    for (rank, points) in pp.items():
+        rank.points = points
+        rank.save()
+
+    pp = {}
+
+    for v in double_acc.itervalues():
+        pp.setdefault(v['a'], 0)
+        pp.setdefault(v['b'], 0)
+        pp[v['a']] += v['s'] / v['c']
+        pp[v['b']] -= v['s'] / v['c']
+
+    #reset all scores
+    DoubleRanking.objects.all().update(points=None)
+
+    for (rank, points) in pp.items():
+        rank.points = points
+        rank.save()
+
+
 
 class InvalidScore(Exception):
     pass
