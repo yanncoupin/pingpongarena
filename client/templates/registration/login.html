@@ -1,0 +1,27 @@
+{% extends "base/page.html" %}
+{% block title %}Identification{% endblock %}
+{% block content %}
+<nav>
+<a href="/">Classement</a>
+</nav>
+<section id="login">
+<header>
+<h1>Identification</h1>
+</header>
+{% if form.errors %}
+<p>Nom d’utilisateur ou mot de passe incorrect.</p>
+{% endif %}
+<form action="login" method="POST">
+{% csrf_token %}
+<div id="form">
+{{ form.username.label_tag }}<br/>
+{{ form.username }}<br/>
+{{ form.password.label_tag }}<br/>
+{{ form.password }}
+
+<input type="submit" value="login" />
+<input type="hidden" name="next" value="{{ next }}" />
+<div>
+</form>
+</section>
+{% endblock %}
