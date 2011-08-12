@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Ping Pong Arena - Classement</title>
-<link rel="stylesheet" href="static/css/main.css" />
-</head>
-<body>
-<header id="head">
-<img src="static/images/rackets.png" /><h1>Ping Pong Arena</h1>
-</header>
+{% extends "base/page.html" %}
+{% block title %}Classement{% endblock %}
+{% block content %}
 <nav>
 <a href="/admin/client/player">Liste joueurs</a>
 <a href="/newgame">Nouvelle partie</a>
@@ -50,5 +43,4 @@
 <p>Aucun match en double...</p>
 {% endif %}
 </section>
-</body>
-</html>
+{% endblock %}

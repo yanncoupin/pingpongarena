@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Ping Pong Arena - Nouvelle partie</title>
-<link rel="stylesheet" href="static/css/main.css" />
-</head>
-<body>
+{% extends "base/page.html" %}
+{% block title %}Nouvelle partie{% endblock %}
+{% block content %}
 <nav>
 <a href="/">Classement</a>
 <a href="/admin/client/player">Liste joueurs</a>
@@ -47,5 +43,4 @@
 <p>No player yet...</p>
 {% endif %}
 </section>
-</body>
-</html>
+{% endblock %}
