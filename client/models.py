@@ -89,9 +89,11 @@ def computePoints():
         i['c'] += 1
 
     for game in all_games:
+        points = (game.score_a-game.score_b)
+        points -= cmp(points, 0)*2 #Substract the default difference from the bonus
+        points *= 21.0/game.score_base #normalize as if a 21pts game
+        points += cmp(points, 0) * 10 #bonus for winning
         if game.isDouble():
-            points = game.score_a-game.score_b
-            points += points > 0 and 10 or -10 #bonus for winning
             __setAccPoints(
                 double_acc,
                 DoubleRanking.findOrCreate(game.team_a_1, game.team_a_2),
@@ -99,8 +101,6 @@ def computePoints():
                 points
             )
         else:
-            points = game.score_a-game.score_b
-            points += points > 0 and 10 or -10 #bonus for winning
             __setAccPoints(
                 single_acc,
                 SingleRanking.findOrCreate(game.team_a_1),
@@ -111,31 +111,35 @@ def computePoints():
     pp = {}
 
     for v in single_acc.itervalues():
-        pp.setdefault(v['a'], 0)
-        pp.setdefault(v['b'], 0)
-        pp[v['a']] += v['s'] / v['c']
-        pp[v['b']] -= v['s'] / v['c']
+        pp.setdefault(v['a'], {'s': 0.0, 'c': 0})
+        pp.setdefault(v['b'], {'s': 0.0, 'c': 0})
+        pp[v['a']]['s'] += v['s']
+        pp[v['a']]['c'] += v['c']
+        pp[v['b']]['s'] -= v['s']
+        pp[v['b']]['c'] += v['c']
 
     #reset all scores
     SingleRanking.objects.all().update(points=None)
 
     for (rank, points) in pp.items():
-        rank.points = points
+        rank.points = points['s'] / points['c']
         rank.save()
 
     pp = {}
 
     for v in double_acc.itervalues():
-        pp.setdefault(v['a'], 0)
-        pp.setdefault(v['b'], 0)
-        pp[v['a']] += v['s'] / v['c']
-        pp[v['b']] -= v['s'] / v['c']
+        pp.setdefault(v['a'], {'s': 0.0, 'c': 0})
+        pp.setdefault(v['b'], {'s': 0.0, 'c': 0})
+        pp[v['a']]['s'] += v['s']
+        pp[v['a']]['c'] += v['c']
+        pp[v['b']]['s'] -= v['s']
+        pp[v['b']]['c'] += v['c']
 
     #reset all scores
     DoubleRanking.objects.all().update(points=None)
 
     for (rank, points) in pp.items():
-        rank.points = points
+        rank.points = points['s'] / points['c']
         rank.save()
 
 
