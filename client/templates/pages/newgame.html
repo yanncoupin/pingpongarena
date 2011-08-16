@@ -1,5 +1,9 @@
 {% extends "base/page.html" %}
 {% block title %}Nouvelle partie{% endblock %}
+{% block js %}<script src="static/js/jquery.js" ></script>
+<script src="static/js/newgame.js" ></script>
+{% endblock %}
+{% block banner %}{% endblock %}
 {% block content %}
 <nav>
 <a href="/">Classement</a>
@@ -37,6 +41,7 @@
 <label for="id_score_b">Score joueur/équipe nº2</label>{{ form.score_b }}
 </div>
 </div>
+<div id="warnings"></div>
 <div id="submit"><input type="submit" value="Valider" /></div>
 </form>
 {% else %}

@@ -134,12 +134,12 @@ width: 200px;
 padding: .5em;
 -webkit-border-radius: 5px;
 -moz-border-radius: 5px;
-border-radius: 5px; 
+border-radius: 5px;
 text-shadow: -1px -1px 2px #000000;
-filter: dropshadow(color=#000000, offx=-1, offy=-1); 
+filter: dropshadow(color=#000000, offx=-1, offy=-1);
 -webkit-box-shadow: 0px 0px 3px 1px #0077ff;
 -moz-box-shadow: 0px 0px 3px 1px #0077ff;
-box-shadow: 0px 0px 3px 1px #0077ff; 
+box-shadow: 0px 0px 3px 1px #0077ff;
 background: #fcfff4; /* Old browsers */
 background: -moz-linear-gradient(top, #fcfff4 0%, #e9e9ce 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcfff4), color-stop(100%,#e9e9ce)); /* Chrome,Safari4+ */
@@ -169,9 +169,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', end
 background: linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* W3C */
 -webkit-box-shadow: 0px 0px 3px 1px #e9e9ce
 -moz-box-shadow: 0px 0px 3px 1px #e9e9ce;
-box-shadow: 0px 0px 3px 1px #e9e9ce; 
+box-shadow: 0px 0px 3px 1px #e9e9ce;
 text-shadow: 1px 1px 2px #000000;
 color: #e9e9ce;
+}
+
+.teams label.disabled
+{
+    color: gray;
+    background: darkgray;
+    text-shadow: 0 0 5px #000000;
+    color: transparent;
 }
 
 #base
@@ -187,10 +195,10 @@ display: none;
 
 #base label
 {text-shadow: -1px -1px 2px #000000;
-filter: dropshadow(color=#000000, offx=-1, offy=-1); 
+filter: dropshadow(color=#000000, offx=-1, offy=-1);
 -webkit-box-shadow: 0px 0px 3px 1px #0077ff;
 -moz-box-shadow: 0px 0px 3px 1px #0077ff;
-box-shadow: 0px 0px 3px 1px #0077ff; 
+box-shadow: 0px 0px 3px 1px #0077ff;
 background: #fcfff4; /* Old browsers */
 background: -moz-linear-gradient(top, #fcfff4 0%, #e9e9ce 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fcfff4), color-stop(100%,#e9e9ce)); /* Chrome,Safari4+ */
@@ -211,8 +219,8 @@ padding: 10px;
 -moz-border-radius-bottomright: 0px;
 -moz-border-radius-bottomleft: 5px;
 -webkit-border-radius: 5px 0px 0px 5px;
-border-radius: 5px 0px 0px 5px; 
-}    
+border-radius: 5px 0px 0px 5px;
+}
 
 
 #base label[for=base_1]
@@ -222,8 +230,8 @@ border-radius: 5px 0px 0px 5px;
 -moz-border-radius-bottomright: 5px;
 -moz-border-radius-bottomleft: 0px;
 -webkit-border-radius: 0px 5px 5px 0px;
-border-radius: 0px 5px 5px 0px; 
-}    
+border-radius: 0px 5px 5px 0px;
+}
 
 #base input:checked + label
 {
@@ -237,7 +245,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', end
 background: linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* W3C */
 -webkit-box-shadow: 0px 0px 3px 1px #e9e9ce
 -moz-box-shadow: 0px 0px 3px 1px #e9e9ce;
-box-shadow: 0px 0px 3px 1px #e9e9ce; 
+box-shadow: 0px 0px 3px 1px #e9e9ce;
 text-shadow: 1px 1px 2px #000000;
 color: #e9e9ce;
 }
@@ -281,7 +289,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', end
 background: linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* W3C */
 -webkit-box-shadow: 0px 0px 3px 1px #e9e9ce
 -moz-box-shadow: 0px 0px 3px 1px #e9e9ce;
-box-shadow: 0px 0px 3px 1px #e9e9ce; 
+box-shadow: 0px 0px 3px 1px #e9e9ce;
 text-shadow: 1px 1px 2px #000000;
 color: #e9e9ce;
 font-size: 65px;
@@ -305,10 +313,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#606c88', end
 background: linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* W3C */
 -webkit-box-shadow: 0px 0px 3px 1px #e9e9ce
 -moz-box-shadow: 0px 0px 3px 1px #e9e9ce;
-box-shadow: 0px 0px 3px 1px #e9e9ce; 
+box-shadow: 0px 0px 3px 1px #e9e9ce;
 text-shadow: 1px 1px 2px #000000;
 color: #e9e9ce;
     border: 1px solid gray;
     border-radius: 4px 4px 4px 4px;
     font-size: 12pt;
+}
+
+#warnings
+{
+    color: red;
+    margin-bottom: 3px;
+    text-align: center;
 }
