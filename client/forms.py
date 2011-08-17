@@ -7,6 +7,10 @@ from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from itertools import chain
+from django.forms.widgets import TextInput
+
+class NumberInput(TextInput):
+    input_type = 'number'
 
 class PushButtonMultipleChoice(forms.CheckboxSelectMultiple):
 
@@ -51,8 +55,8 @@ class NewGameForm(forms.Form):
     team_a = forms.ModelMultipleChoiceField(queryset=Player.objects.all().order_by('name'), widget=PushButtonMultipleChoice)
     team_b = forms.ModelMultipleChoiceField(queryset=Player.objects.all().order_by('name'), widget=PushButtonMultipleChoice)
     base = forms.TypedChoiceField(choices=((11, '11'), (21, '21')), coerce=int, initial='21', widget=PushButtonRadio)
-    score_a = forms.IntegerField(min_value=0, widget=forms.TextInput(attrs={'placeholder': '0'}))
-    score_b = forms.IntegerField(min_value=0, widget=forms.TextInput(attrs={'placeholder': '0'}))
+    score_a = forms.IntegerField(min_value=0, widget=NumberInput(attrs={'placeholder': '0'}))
+    score_b = forms.IntegerField(min_value=0, widget=NumberInput(attrs={'placeholder': '0'}))
 
     def clean(self):
         cleaned_data = self.cleaned_data
