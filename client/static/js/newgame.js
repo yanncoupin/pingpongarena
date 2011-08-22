@@ -37,6 +37,7 @@ $(document).ready(function(){
         }
     });
     $('input[name="team_b"] + label').click(function(event){event.target.previousSibling.click();event.preventDefault()});
+    $('input[name="base"] + label').click(function(event){event.target.previousSibling.click();event.preventDefault()});
     $('form').submit(function(){
         a = $('input:checked[name="team_a"]').length;
         b = $('input:checked[name="team_b"]').length;
@@ -53,15 +54,15 @@ $(document).ready(function(){
         }
         if (score_a <= base && score_b <= base && score_a != base && score_b != base)
         {
-            $("#warnings").text("Score invalide !").show().fadeOut(3000);
+            $("#warnings").text("Score sans gagnant !").show().fadeOut(3000);
             return false;
         }
-        if (score_a <= base && score_b <= base && abs(score_a - score_b) < 2)
+        if (score_a <= base && score_b <= base && abs(score_a - score_b)  == 1)
         {
             $("#warnings").text("Score invalide !").show().fadeOut(3000);
             return false;
         }
-        if ((score_a > base || score_b > base) && (score_a - score_b) != -2 && (score_a - score_b) != -2 )
+        if ((score_a > base || score_b > base) && (score_a - score_b) != -2 && (score_a - score_b) != 2 )
         {
             $("#warnings").text("Score invalide !").show().fadeOut(3000);
             return false;
