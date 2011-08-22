@@ -42,16 +42,13 @@ $(document).ready(function(){
         b = $('input:checked[name="team_b"]').length;
         base = parseInt($('input:checked[name="base"]')[0].value);
         score_a = parseInt($('input[name="score_a"]')[0].value);
+        if (isNaN(score_a)) {score_a = 0;}
         score_b = parseInt($('input[name="score_b"]')[0].value);
+        if (isNaN(score_b)) {score_b = 0;}
 
         if (a != 1 && a != 2 || b != 1 && b != 2 || a != b)
         {
             $("#warnings").text("Simple ou double uniquement !").show().fadeOut(3000);
-            return false;
-        }
-        if (isNaN(score_a) || isNaN(score_b))
-        {
-            $("#warnings").text("Score invalide !").show().fadeOut(3000);
             return false;
         }
         if (score_a <= base && score_b <= base && score_a != base && score_b != base)

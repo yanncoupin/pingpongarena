@@ -55,16 +55,18 @@ class NewGameForm(forms.Form):
     team_a = forms.ModelMultipleChoiceField(queryset=Player.objects.all().order_by('name'), widget=PushButtonMultipleChoice)
     team_b = forms.ModelMultipleChoiceField(queryset=Player.objects.all().order_by('name'), widget=PushButtonMultipleChoice)
     base = forms.TypedChoiceField(choices=((11, '11'), (21, '21')), coerce=int, initial='21', widget=PushButtonRadio)
-    score_a = forms.IntegerField(min_value=0, widget=NumberInput(attrs={'placeholder': '0'}))
-    score_b = forms.IntegerField(min_value=0, widget=NumberInput(attrs={'placeholder': '0'}))
+    score_a = forms.IntegerField(min_value=0, required=False, widget=NumberInput(attrs={'placeholder': '0'}))
+    score_b = forms.IntegerField(min_value=0, required=False, widget=NumberInput(attrs={'placeholder': '0'}))
 
     def clean(self):
         cleaned_data = self.cleaned_data
         team_a  = cleaned_data.get('team_a')
         team_b  = cleaned_data.get('team_b')
         base    = cleaned_data.get('base')
-        score_a = cleaned_data.get('score_a')
-        score_b = cleaned_data.get('score_b')
+        score_a = cleaned_data.get('score_a', 0) or 0
+        cleaned_data['score_a'] = score_a
+        score_b = cleaned_data.get('score_b', 0) or 0
+        cleaned_data['score_b'] = score_b
 
         if team_a is None or team_b is None:
             raise forms.ValidationError(u'Seuls les matchs en simple ou en double sont autorisés')
