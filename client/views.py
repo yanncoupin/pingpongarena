@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from client.models import *
 import logging
+from threading import Thread
 
 def home(request):
     all_players = SingleRanking.objects.exclude(points=None).order_by('-points')
@@ -37,6 +38,10 @@ def newgame(request):
             game.score_a = data['score_a']
             game.score_b = data['score_b']
             game.save()
+
+            worker = Thread(target=computePoints)
+            worker.start()
+            worker.join(0.3) #wait 300ms at most for the update, after that redirect and let the computation run in the background
 
             return HttpResponseRedirect('/') # Redirect after POST
     else:
