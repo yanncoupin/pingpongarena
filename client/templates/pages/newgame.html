@@ -3,16 +3,12 @@
 {% block js %}<script src="static/js/jquery.js" ></script>
 <script src="static/js/newgame.js" ></script>
 {% endblock %}
-{% block banner %}{% endblock %}
+{% block leftmenuurl %}/{% endblock %}
+{% block leftmenu %}Classement{% endblock %}
+{% block rightmenuurl %}/admin/client/player{% endblock %}
+{% block rightmenu %}Liste joueurs{% endblock %}
 {% block content %}
-<nav>
-<a href="/">Classement</a>
-<a href="/admin/client/player">Liste joueurs</a>
-</nav>
 <section>
-<header>
-<h1>Nouvelle partie</h1>
-</header>
 {% if form.non_field_errors %}<div id="error_message">{{ form.non_field_errors }}</div>{% endif %}
 {% if True or form.team_a %}
 <form action="/newgame" method="post">
