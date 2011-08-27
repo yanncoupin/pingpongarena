@@ -1,25 +1,24 @@
 {% extends "base/page.html" %}
 {% block title %}Classement{% endblock %}
+{% block leftmenuurl %}/admin/client/player{% endblock %}
+{% block leftmenu %}Liste joueurs{% endblock %}
+{% block rightmenuurl %}/newgame{% endblock %}
+{% block rightmenu %}Nouvelle partie{% endblock %}
 {% block content %}
-<nav>
-<a href="/admin/client/player">Liste joueurs</a>
-<a href="/newgame">Nouvelle partie</a>
-</nav>
+<section id="ranks">
 <section id="singles">
 <header>
 <h1>Les champions</h1>
 </header>
 {% if best_players %}
-    <div id="best">
+    <table>
 {% for score in best_players %}
-<div class="champion"><span class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</span><span class="name">{{ score.player.name }}</span><span class="score"> ({{ score.points|floatformat }} pt)</span></div>
+<tr class="champion"><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name">{{ score.player.name }}</td><td class="score">{{ score.points|floatformat }} pt</td></tr>
 {% endfor %}
-    </div>
-    <div id="rest">
 {% for score in rest_players %}
-<div class="player"><span class="rank">{{ forloop.counter|add:3 }}</span><span class="name">{{ score.player.name }}</span><span class="score"> ({{ score.points|floatformat }} pt)</span></div>
+<tr class="player"><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name">{{ score.player.name }}</td><td class="score">{{ score.points|floatformat }} pt</td></tr>
 {% endfor %}
-</div>
+</table>
 {% else %}
 <p>Aucun match en simple...</p>
 {% endif %}
@@ -29,18 +28,17 @@
 <h1>Les meilleures équipes</h1>
 </header>
 {% if best_teams %}
-    <div id="best">
+    <table>
 {% for score in best_teams %}
-<div class="champion"><span class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</span><span class="name">{{ score }}</span><span class="score"> ({{ score.points|floatformat:-1 }} pt)</span></div>
+<tr class="champion"><td class="score">{{ score.points|floatformat:-1 }} pt</td><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name">{{ score }}</td></tr>
 {% endfor %}
-    </div>
-    <div id="rest">
 {% for score in rest_teams %}
-<div class="player"><span class="rank">{{ forloop.counter|add:3 }}</span><span class="name">{{ score }}</span><span class="score"> ({{ score.points|floatformat:-1 }} pt)</span></div>
+<tr class="player"><td class="score">{{ score.points|floatformat:-1 }} pt</td><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name">{{ score }}</td></tr>
 {% endfor %}
-</div>
+</table>
 {% else %}
 <p>Aucun match en double...</p>
 {% endif %}
+</section>
 </section>
 {% endblock %}

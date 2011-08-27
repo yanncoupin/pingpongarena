@@ -1,112 +1,134 @@
-body
-{
-background: #45484d; /* Old browsers */
-background: -moz-linear-gradient(top, #45484d 0%, #000000 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#45484d), color-stop(100%,#000000)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, #45484d 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, #45484d 0%,#000000 100%); /* Opera11.10+ */
-background: -ms-linear-gradient(top, #45484d 0%,#000000 100%); /* IE10+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
-background: linear-gradient(top, #45484d 0%,#000000 100%); /* W3C */
-color: white;
+body {
+background: url('/static/images/pattern.jpg');
+color: #3b3934;
 font-family: helvetica, arial, sans-serif;
 }
 
-nav
-{
-background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.16, rgb(201,194,163)),
-    color-stop(0.9, rgb(140,139,123))
-);
-background-image: -moz-linear-gradient(
-    center top,
-    rgb(201,194,163) 16%,
-    rgb(140,139,123) 90%
-);
-color: rgb(6,46,110);
-}
-nav a { text-decoration: none; color: rgb(6,46,110)}
-
-#head
-{
-    background-image: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0.16, rgb(201,194,163)),
-    color-stop(0.9, rgb(140,139,123))
-);
-    background-image: -moz-linear-gradient(
-    center top,
-    rgb(201,194,163) 16%,
-    rgb(140,139,123) 90%
-);
-    height: 160px;
-    text-shadow: 2px 2px 2px #000;
+#head {
+    background-image: url("/static/images/banner.png");
+    background-position: 50% 0;
+    background-repeat: no-repeat;
+    height: 202px;
+    color: #4e7f7a;
+    font: 15pt;
 }
 
-#head h1
-{
-    margin-left: 160px;
+#head a {
+    text-decoration: none;
+    color: #4e7f7a;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#leftmenu {
+    left: 50%;
+    margin-left: -350px;
+    padding-left: 0;
+    position: absolute;
     text-align: center;
-    padding-top: 1em;
-    vertical-align: bottom;
+    top: 118px;
+    width: 200px;
 }
 
-#head img
-{
-    float: left;
-    margin: 5px;
+#rightmenu {
+    left: 50%;
+    margin-left: 150px;
+    position: absolute;
+    text-align: center;
+    top: 118px;
+    width: 200px;
+}
+
+#ranks {
+    vertical-align: top;
+    background: url("/static/images/filet2.gif") repeat-y scroll 50% 0 transparent;
+    height: 500px
+}
+
+#ranks h1 {
+    text-transform: uppercase;
+}
+
+#singles {
+    display: inline-block;
+    position: absolute;
+    right: 50%;
+    margin-right: 5px;
+}
+
+#teams {
+    display: inline-block;
+    left: 50%;
+    position: absolute;
+    margin-left: 1em;
+}
+
+#teams header {
+    text-align: right;
+}
+
+#ranks table {
+    border-spacing: 0
 }
 
 .rank {
+    color: #3b3934;
     display: inline-block;
-    font-size: 18px;
     font-weight: bold;
-    height: 33px;
-    padding-top: 5px;
-    position: relative;
     text-align: center;
-    width: 100%;
     vertical-align: middle;
-    width: 50px;
-    margin-right: 1em;
+    width: 39px;
+    padding: 0 0.5em 0 0;
+}
+
+.champion .rank {
+    background-image: url("../images/laurel.png");
+    background-repeat: no-repeat;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 .rank1 {
-    background-image: url("../images/laurel.png");
-    color: #FFEE88;
-    text-shadow: 0 0 8px #FFEE88;
+    color: #d7981e;
 }
 
 .rank2 {
-    background-image: url("../images/laurel.png");
-    color: #EEEEEE;
-    text-shadow: 0 0 8px #EEEEEE;
+    color: #a49c8d;
 }
 
 .rank3 {
-    background-image: url("../images/laurel.png");
-    color: #FFAA77;
-    text-shadow: 0 0 8px #FFAA77;
+    color: #7a3b15;
 }
 
 .champion
 {
-margin: 1em 0 0 0;
+    font-size: 38px;
+    height: 1.5em;
 }
 
 .champion .name
 {
     font-weight: bold;
+    font-size: 16pt;
+}
+
+#singles .score
+{
+    text-align: right;
+    padding-left: 2em;
+    background: url(/static/images/filet1.gif) 20px 0 repeat-y;
+}
+
+#teams .score
+{
+    text-align: left;
+    padding-right: 2em;
+    background: url(/static/images/filet1.gif) 55px 0 repeat-y;
 }
 
 .champion .score
 {
-    font-size: 90%;
+    font-size: 12pt;
 }
 
 #team_1

@@ -5,7 +5,8 @@
 <link rel="stylesheet" href="static/css/main.css" />
 {% block js %}{% endblock %}
 </head>
-<body>{% block banner %}<header id="head"><img src="static/images/rackets.png" /><h1>Ping Pong Arena</h1></header>{% endblock %}
+<body>
+    <header id="head">{% block banner %}<nav><div id="leftmenu"><a href="{% block leftmenuurl %}{% endblock %}">{% block leftmenu %}{% endblock %}</a></div><div id="rightmenu"><a href="{% block rightmenuurl %}{% endblock %}">{% block rightmenu %}{% endblock %}</a></div></nav>{% endblock %}</header>
 {% block content %}{% endblock %}
 </body>
 </html>
