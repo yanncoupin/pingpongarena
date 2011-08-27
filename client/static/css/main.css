@@ -131,6 +131,33 @@ font-family: helvetica, arial, sans-serif;
     font-size: 12pt;
 }
 
+#login {
+    text-align: center;
+}
+
+#login #box {
+    border: 1px solid #3B3934;
+    border-radius: 5px 5px 5px 5px;
+    display: inline-block;
+    padding: 10px;
+    text-align: left;
+}
+
+#login #box label {
+    margin-top: 15px;
+    display: block;
+}
+
+#login #box input[type=submit] {
+    background: none repeat scroll 0 0 #3B3934;
+    border: 1px solid black;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFBB;
+    font-size: 11pt;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
 #team_1
 {
 float: left;
