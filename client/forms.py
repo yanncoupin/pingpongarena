@@ -1,13 +1,13 @@
 # -*- coding: utf8 -*-
 
 from django import forms
-from client.models import Player
 
 from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 from itertools import chain
 from django.forms.widgets import TextInput
+from django.contrib.auth.models import User
 
 class NumberInput(TextInput):
     input_type = 'number'
@@ -52,8 +52,12 @@ class PushButtonRadio(forms.Select):
         return mark_safe('<div>%s</div>' % ''.join(options))
 
 class NewGameForm(forms.Form):
-    team_a = forms.ModelMultipleChoiceField(queryset=Player.objects.all().order_by('name'), widget=PushButtonMultipleChoice)
-    team_b = forms.ModelMultipleChoiceField(queryset=Player.objects.all().order_by('name'), widget=PushButtonMultipleChoice)
+    def userFirstName(user):
+        return user.first_name
+    team_a = forms.ModelMultipleChoiceField(queryset=User.objects.filter(groups__name='PPA player').order_by('first_name'), widget=PushButtonMultipleChoice)
+    team_a.label_from_instance=userFirstName
+    team_b = forms.ModelMultipleChoiceField(queryset=User.objects.filter(groups__name='PPA player').order_by('first_name'), widget=PushButtonMultipleChoice)
+    team_b.label_from_instance=userFirstName
     base = forms.TypedChoiceField(choices=((11, '11'), (21, '21')), coerce=int, initial='21', widget=PushButtonRadio)
     score_a = forms.IntegerField(min_value=0, required=False, widget=NumberInput(attrs={'placeholder': '0'}))
     score_b = forms.IntegerField(min_value=0, required=False, widget=NumberInput(attrs={'placeholder': '0'}))

@@ -1,8 +1,9 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
 from client.models import *
+from django.contrib.auth.models import User
 import logging
 from threading import Thread
 
@@ -20,7 +21,7 @@ def home(request):
         'rest_teams': rest_teams,
     })
 
-@login_required(login_url='login')
+@permission_required('client.add_game', login_url='login')
 def newgame(request):
     from client.forms import NewGameForm
 
@@ -61,7 +62,7 @@ def login(request):
         },
         context_instance=RequestContext(request)
     )
-    
+
 def game(request, game_id):
     return HttpResponse(Game.objects.get(id=game_id))
 

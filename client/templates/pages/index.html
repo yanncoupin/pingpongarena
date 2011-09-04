@@ -1,6 +1,6 @@
 {% extends "base/page.html" %}
 {% block title %}Classement{% endblock %}
-{% block leftmenuurl %}/admin/client/player{% endblock %}
+{% block leftmenuurl %}/admin/auth/user{% endblock %}
 {% block leftmenu %}Liste joueurs{% endblock %}
 {% block rightmenuurl %}/newgame{% endblock %}
 {% block rightmenu %}Nouvelle partie{% endblock %}
@@ -13,10 +13,10 @@
 {% if best_players %}
     <table>
 {% for score in best_players %}
-<tr class="champion"><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name">{{ score.player.name }}</td><td class="score">{{ score.points|floatformat }} pt</td></tr>
+<tr class="champion"><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name">{{ score.player.first_name }}</td><td class="score">{{ score.points|floatformat }} pt</td></tr>
 {% endfor %}
 {% for score in rest_players %}
-<tr class="player"><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name">{{ score.player.name }}</td><td class="score">{{ score.points|floatformat }} pt</td></tr>
+<tr class="player"><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name">{{ score.player.first_name }}</td><td class="score">{{ score.points|floatformat }} pt</td></tr>
 {% endfor %}
 </table>
 {% else %}

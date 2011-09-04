@@ -1,20 +1,11 @@
 #-*- coding:utf8 -*-
 
 from django.db import models
+from django.contrib.auth.models import User
 from datetime import datetime, timedelta
 
-class Player(models.Model):
-    name = models.CharField('name of the player', max_length=100)
-    email = models.EmailField()
-
-    class Meta:
-        ordering = ['name']
-
-    def __unicode__(self):
-        return self.name
-
 class SingleRanking(models.Model):
-    player = models.ForeignKey('Player', related_name='player', unique=True)
+    player = models.ForeignKey(User, related_name='player', unique=True)
     points = models.FloatField(default=None, null=True)
 
     @staticmethod
@@ -27,8 +18,8 @@ class SingleRanking(models.Model):
             return new
 
 class DoubleRanking(models.Model):
-    first_player = models.ForeignKey('Player', related_name='first_player')
-    second_player = models.ForeignKey('Player', related_name='second_player')
+    first_player = models.ForeignKey(User, related_name='first_player')
+    second_player = models.ForeignKey(User, related_name='second_player')
     points = models.FloatField(default=None, null=True)
 
     class Meta:
@@ -36,8 +27,8 @@ class DoubleRanking(models.Model):
 
     def __unicode__(self):
         names = []
-        names.append(self.first_player.name)
-        names.append(self.second_player.name)
+        names.append(self.first_player.first_name)
+        names.append(self.second_player.first_name)
         names.sort()
         return u' – '.join(names)
 
@@ -54,10 +45,10 @@ class DoubleRanking(models.Model):
             return new
 
 class Game(models.Model):
-    team_a_1 = models.ForeignKey('Player', related_name='team_a_1')
-    team_a_2 = models.ForeignKey('Player', related_name='team_a_2', null=True)
-    team_b_1 = models.ForeignKey('Player', related_name='team_b_1')
-    team_b_2 = models.ForeignKey('Player', related_name='team_b_2', null=True)
+    team_a_1 = models.ForeignKey(User, related_name='team_a_1')
+    team_a_2 = models.ForeignKey(User, related_name='team_a_2', null=True)
+    team_b_1 = models.ForeignKey(User, related_name='team_b_1')
+    team_b_2 = models.ForeignKey(User, related_name='team_b_2', null=True)
     game_time = models.DateTimeField(auto_now_add=True)
     score_a = models.IntegerField()
     score_b = models.IntegerField()
@@ -65,8 +56,8 @@ class Game(models.Model):
 
     def __unicode__(self):
         return "%s vs. %s" % (
-            self.team_a_1.name if self.team_a_2 == None else "%s & %s" % (self.team_a_1.name, self.team_a_2.name),
-            self.team_b_1.name if self.team_b_2 == None else "%s & %s" % (self.team_b_1.name, self.team_b_2.name),
+            self.team_a_1.first_name if self.team_a_2 == None else "%s & %s" % (self.team_a_1.first_name, self.team_a_2.first_name),
+            self.team_b_1.first_name if self.team_b_2 == None else "%s & %s" % (self.team_b_1.first_name, self.team_b_2.first_name),
             )
 
     def isDouble(self):

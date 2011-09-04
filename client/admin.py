@@ -1,6 +1,5 @@
-from client.models import Player, Game
+from client.models import Game
 from django.contrib import admin
 
-admin.site.register(Player)
 admin.site.register(Game)
 
