@@ -53,6 +53,7 @@ class Game(models.Model):
     score_a = models.IntegerField()
     score_b = models.IntegerField()
     score_base = models.IntegerField(choices=(('11', '11'), ('21', '21'))) # 11 or 21
+    referee = models.ForeignKey(User, related_name='referee')
 
     def __unicode__(self):
         return "%s vs. %s" % (

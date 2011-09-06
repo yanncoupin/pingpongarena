@@ -38,6 +38,7 @@ def newgame(request):
             game.score_base = data['base']
             game.score_a = data['score_a']
             game.score_b = data['score_b']
+            game.referee = request.user
             game.save()
 
             worker = Thread(target=computePoints)
