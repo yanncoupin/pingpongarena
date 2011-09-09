@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Josefin+Slab:700);
+
 body {
 background: url('/static/images/pattern.jpg');
 color: #3b3934;
@@ -11,12 +13,14 @@ font-family: helvetica, arial, sans-serif;
     height: 202px;
     color: #4e7f7a;
     font: 15pt;
+    font-family: 'Josefin Slab', helvetica, arial, sans-serif;
 }
 
 #head a {
     text-decoration: none;
     color: #4e7f7a;
     font-weight: bold;
+    font-size: 15pt;
     text-transform: uppercase;
 }
 
@@ -26,7 +30,7 @@ font-family: helvetica, arial, sans-serif;
     padding-left: 0;
     position: absolute;
     text-align: center;
-    top: 118px;
+    top: 116px;
     width: 200px;
 }
 
@@ -35,7 +39,7 @@ font-family: helvetica, arial, sans-serif;
     margin-left: 150px;
     position: absolute;
     text-align: center;
-    top: 118px;
+    top: 116px;
     width: 200px;
 }
 
