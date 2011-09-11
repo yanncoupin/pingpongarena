@@ -1,0 +1,26 @@
+{% extends "base/page.html" %}
+{% block title %}Statistique détaillées{% endblock %}
+{% block leftmenuurl %}/{% endblock %}
+{% block leftmenu %}Accueil{% endblock %}
+{% block rightmenuurl %}/newgame{% endblock %}
+{% block rightmenu %}Nouvelle partie{% endblock %}
+{% block content %}
+<section id="stats">
+<header>
+<h1>{{ player.first_name }} {{ player.last_name }}</h1>
+<p>{{ game_count }} matchs — {{ points|floatformat:2 }} pt — nº{{ rank }} au classement PPA</p>
+</header>
+</section>
+<section id="means">
+<h3>Moyennes des matches</h3>
+{% if averages %}
+    <table>
+{% for game in averages %}
+<tr class="opponent"><td class="name">{% comment %}<a href="{% url player player_id=opponent.id %}">{% endcomment %}{{ game.opponent.first_name }}</td><td class="player_wins">{% if game.player_wins %}victoire{% else %}defaite{% endif %}</td><td class="score">{{ game.player_score|floatformat }} — {{ game.opponent_score|floatformat }}, {{ game.count }} match(s)</td></tr>
+{% endfor %}
+</table>
+{% else %}
+<p>Aucun match joué...</p>
+{% endif %}
+</section>
+{% endblock %}

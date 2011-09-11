@@ -13,10 +13,10 @@
 {% if best_players %}
     <table>
 {% for score in best_players %}
-<tr class="champion"><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name">{{ score.player.first_name }}</td><td class="score">{{ score.points|floatformat }} pt</td></tr>
+<tr class="champion"><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name"><a href="{% url player player_id=score.player.id %}">{{ score.player.first_name }}</a></td><td class="score">{{ score.points|floatformat }} pt</td></tr>
 {% endfor %}
 {% for score in rest_players %}
-<tr class="player"><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name">{{ score.player.first_name }}</td><td class="score">{{ score.points|floatformat }} pt</td></tr>
+<tr class="player"><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name"><a href="{% url player player_id=score.player.id %}">{{ score.player.first_name }}</a></td><td class="score">{{ score.points|floatformat }} pt</td></tr>
 {% endfor %}
 </table>
 {% else %}

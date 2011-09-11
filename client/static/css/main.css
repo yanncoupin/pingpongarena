@@ -332,6 +332,12 @@ font-size: 65px;
 text-align: center;
 }
 
+#means .opponent .name
+{
+    font-weight: bold;
+    font-size: 110%;
+}
+
 #submit
 {
     text-align: center;

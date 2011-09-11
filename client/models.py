@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 class SingleRanking(models.Model):
     player = models.ForeignKey(User, related_name='player', unique=True)
     points = models.FloatField(default=None, null=True)
+    rank = models.IntegerField(default=None, null=True)
+    game_count = models.IntegerField(default=None, null=True)
 
     @staticmethod
     def findOrCreate(pl):
@@ -14,8 +16,26 @@ class SingleRanking(models.Model):
             return SingleRanking.objects.get(player=pl)
         except SingleRanking.DoesNotExist:
             new = SingleRanking(player=pl)
-            new.save()
             return new
+
+class AverageMatchStat(models.Model):
+    player_a = models.ForeignKey(User, related_name='player_a')
+    player_b = models.ForeignKey(User, related_name='player_b')
+    score_a = models.FloatField(null=True)
+    score_b = models.FloatField(null=True)
+    game_count = models.IntegerField(null=True)
+
+    @staticmethod
+    def findOrCreate(pl_a, pl_b):
+        try:
+            return AverageMatchStat.objects.get(player_a=pl_a, player_b=pl_b)
+        except AverageMatchStat.DoesNotExist:
+            new = AverageMatchStat(player_a=pl_a, player_b=pl_b)
+            return new
+
+    @staticmethod
+    def getForUser(user):
+        return AverageMatchStat.objects.extra(where=['player_a_id = %s or player_b_id = %s'], params=[user.id, user.id])
 
 class DoubleRanking(models.Model):
     first_player = models.ForeignKey(User, related_name='first_player')
@@ -41,7 +61,6 @@ class DoubleRanking(models.Model):
             return DoubleRanking.objects.get(first_player=pl_a, second_player=pl_b)
         except DoubleRanking.DoesNotExist:
             new = DoubleRanking(first_player = pl_a, second_player = pl_b)
-            new.save()
             return new
 
 class Game(models.Model):
@@ -70,6 +89,8 @@ def computePoints():
 
     single_acc = {}
     double_acc = {}
+    player_count = {}
+    avg_score = {}
 
     def __setAccPoints(acc, a, b, p):
         if (a.id > b.id):
@@ -93,6 +114,23 @@ def computePoints():
                 points
             )
         else:
+            player_count[game.team_a_1] = player_count.setdefault(game.team_a_1, 0) + 1
+            player_count[game.team_b_1] = player_count.setdefault(game.team_b_1, 0) + 1
+            (pta, ptb) = (game.score_a, game.score_b)
+            if game.score_base == 11:
+                (pta, ptb) = (pta, ptb) * 21.0/11.0
+            if (game.team_a_1.id < game.team_b_1.id):
+                avg_key = '%0u-%0u' % (game.team_a_1.id, game.team_b_1.id)
+                avg = avg_score.setdefault(avg_key, {'a': game.team_a_1, 'b': game.team_b_1, 'sa': 0, 'sb': 0, 'c': 0})
+                avg['sa'] += pta
+                avg['sb'] += ptb
+                avg['c']  += 1
+            else:
+                avg_key = '%0u-%0u' % (game.team_b_1.id, game.team_a_1.id)
+                avg = avg_score.setdefault(avg_key, {'a': game.team_b_1, 'b': game.team_a_1, 'sa': 0, 'sb': 0, 'c': 0})
+                avg['sa'] += ptb
+                avg['sb'] += pta
+                avg['c']  += 1
             __setAccPoints(
                 single_acc,
                 SingleRanking.findOrCreate(game.team_a_1),
@@ -100,32 +138,49 @@ def computePoints():
                 points
             )
 
+    AverageMatchStat.objects.all().update(score_a=None, score_b=None, game_count=None)
+
+    for avg in avg_score.values():
+        print avg
+        score = AverageMatchStat.findOrCreate(avg['a'], avg['b'])
+        score.score_a = avg['sa'] / avg['c']
+        score.score_b = avg['sb'] / avg['c']
+        score.game_count = avg['c']
+        score.save()
+
     pp = {}
 
     for v in single_acc.itervalues():
-        pp.setdefault(v['a'], {'s': 0.0, 'c': 0})
-        pp.setdefault(v['b'], {'s': 0.0, 'c': 0})
-        pp[v['a']]['s'] += v['s']
-        pp[v['a']]['c'] += v['c']
-        pp[v['b']]['s'] -= v['s']
-        pp[v['b']]['c'] += v['c']
+        a = pp.setdefault(v['a'], {'s': 0.0, 'c': 0})
+        b = pp.setdefault(v['b'], {'s': 0.0, 'c': 0})
+        a['s'] += v['s']
+        a['c'] += v['c']
+        b['s'] -= v['s']
+        b['c'] += v['c']
 
     #reset all scores
-    SingleRanking.objects.all().update(points=None)
+    SingleRanking.objects.all().update(points=None, game_count=None, rank=None)
 
     for (rank, points) in pp.items():
         rank.points = points['s'] / points['c']
+        rank.game_count = player_count[rank.player]
         rank.save()
+
+    position = 1
+    for rank in SingleRanking.objects.filter(game_count__isnull=False).order_by('-points'):
+        rank.rank = position
+        rank.save()
+        position += 1
 
     pp = {}
 
     for v in double_acc.itervalues():
-        pp.setdefault(v['a'], {'s': 0.0, 'c': 0})
-        pp.setdefault(v['b'], {'s': 0.0, 'c': 0})
-        pp[v['a']]['s'] += v['s']
-        pp[v['a']]['c'] += v['c']
-        pp[v['b']]['s'] -= v['s']
-        pp[v['b']]['c'] += v['c']
+        a = pp.setdefault(v['a'], {'s': 0.0, 'c': 0})
+        b = pp.setdefault(v['b'], {'s': 0.0, 'c': 0})
+        a['s'] += v['s']
+        a['c'] += v['c']
+        b['s'] -= v['s']
+        b['c'] += v['c']
 
     #reset all scores
     DoubleRanking.objects.all().update(points=None)

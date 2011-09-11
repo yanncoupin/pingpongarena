@@ -21,6 +21,29 @@ def home(request):
         'rest_teams': rest_teams,
     })
 
+def player(request, player_id):
+    player = User.objects.get(id=player_id)
+    ranking = SingleRanking.objects.get(player=player)
+    averages = []
+    for game in AverageMatchStat.getForUser(player):
+        averages.append({
+            'opponent': game.player_a if game.player_a != player else game.player_b,
+            'player_score': game.score_b if game.player_a != player else game.score_a,
+            'opponent_score': game.score_a if game.player_a != player else game.score_b,
+            'player_wins': game.score_b > game.score_a if game.player_a != player else game.score_a > game.score_b,
+            'count': game.game_count
+            })
+
+    averages.sort(lambda x, y: cmp(x['player_score']-x['opponent_score'], y['player_score']-y['opponent_score']))
+
+    return render_to_response('pages/player.html', {
+        'player': player,
+        'game_count': ranking.game_count,
+        'points': ranking.points,
+        'rank': ranking.rank,
+        'averages': averages
+    })
+
 @permission_required('client.add_game', login_url='login')
 def newgame(request):
     from client.forms import NewGameForm
