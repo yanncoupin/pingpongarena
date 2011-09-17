@@ -110,6 +110,11 @@ font-family: helvetica, arial, sans-serif;
     height: 1.5em;
 }
 
+#singles a
+{
+    color: #3B3934;
+}
+
 .champion .name
 {
     font-weight: bold;
