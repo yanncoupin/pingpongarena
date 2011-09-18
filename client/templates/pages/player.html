@@ -16,7 +16,7 @@
 {% if averages %}
     <table>
 {% for game in averages %}
-<tr class="opponent"><td class="name">{% comment %}<a href="{% url player player_id=opponent.id %}">{% endcomment %}{{ game.opponent.first_name }}</td><td class="player_wins">{% if game.player_wins %}victoire{% else %}defaite{% endif %}</td><td class="score">{{ game.player_score|floatformat }} — {{ game.opponent_score|floatformat }}, {{ game.count }} match(s)</td></tr>
+<tr class="opponent"><td><span{% if game.player_wins %} class="player_wins">victoire{% else %} class="player_loses">defaite{% endif %}</span> sur</td><td class="name">{% comment %}<a href="{% url player player_id=opponent.id %}">{% endcomment %}{{ game.opponent.first_name }}</td><td class="score">{{ game.player_score|floatformat }} — {{ game.opponent_score|floatformat }}</td><td class="count">{{ game.count }} match(s)</td></tr>
 {% endfor %}
 </table>
 {% else %}
