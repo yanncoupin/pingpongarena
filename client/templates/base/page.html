@@ -6,7 +6,7 @@
 {% block js %}{% endblock %}
 </head>
 <body>
-    <header id="head">{% block banner %}<nav><div id="leftmenu"><a href="{% block leftmenuurl %}{% endblock %}">{% block leftmenu %}{% endblock %}</a></div><div id="rightmenu"><a href="{% block rightmenuurl %}{% endblock %}">{% block rightmenu %}{% endblock %}</a></div></nav>{% endblock %}</header>
+    <header id="head">{% block banner %}<nav><a href="{% block leftmenuurl %}{% endblock %}"><div id="leftmenu">{% block leftmenu %}{% endblock %}</div></a><a href="{% block rightmenuurl %}{% endblock %}"><div id="rightmenu">{% block rightmenu %}{% endblock %}</div></a></nav>{% endblock %}</header>
 {% block content %}{% endblock %}
 </body>
 </html>
