@@ -35,7 +35,7 @@ class AverageMatchStat(models.Model):
 
     @staticmethod
     def getForUser(user):
-        return AverageMatchStat.objects.extra(where=['player_a_id = %s or player_b_id = %s'], params=[user.id, user.id])
+        return AverageMatchStat.objects.extra(where=['(player_a_id = %s or player_b_id = %s) and score_a IS NOT NULL'], params=[user.id, user.id])
 
 class DoubleRanking(models.Model):
     first_player = models.ForeignKey(User, related_name='first_player')
@@ -118,7 +118,8 @@ def computePoints():
             player_count[game.team_b_1] = player_count.setdefault(game.team_b_1, 0) + 1
             (pta, ptb) = (game.score_a, game.score_b)
             if game.score_base == 11:
-                (pta, ptb) = (pta, ptb) * 21.0/11.0
+                pta *= 21.0/11.0
+                ptb *= 21.0/11.0
             if (game.team_a_1.id < game.team_b_1.id):
                 avg_key = '%0u-%0u' % (game.team_a_1.id, game.team_b_1.id)
                 avg = avg_score.setdefault(avg_key, {'a': game.team_a_1, 'b': game.team_b_1, 'sa': 0, 'sb': 0, 'c': 0})
@@ -141,7 +142,6 @@ def computePoints():
     AverageMatchStat.objects.all().update(score_a=None, score_b=None, game_count=None)
 
     for avg in avg_score.values():
-        print avg
         score = AverageMatchStat.findOrCreate(avg['a'], avg['b'])
         score.score_a = avg['sa'] / avg['c']
         score.score_b = avg['sb'] / avg['c']
