@@ -143,8 +143,9 @@ def computePoints():
 
     for avg in avg_score.values():
         score = AverageMatchStat.findOrCreate(avg['a'], avg['b'])
-        score.score_a = avg['sa'] / avg['c']
-        score.score_b = avg['sb'] / avg['c']
+        normalizer = 21.0/max(avg['sa'] / avg['c'], avg['sb'] / avg['c'])
+        score.score_a = avg['sa'] / avg['c'] * normalizer
+        score.score_b = avg['sb'] / avg['c'] * normalizer
         score.game_count = avg['c']
         score.save()
 
