@@ -16,6 +16,7 @@ class SingleRanking(models.Model):
             return SingleRanking.objects.get(player=pl)
         except SingleRanking.DoesNotExist:
             new = SingleRanking(player=pl)
+            new.save()
             return new
 
 class AverageMatchStat(models.Model):
@@ -61,6 +62,7 @@ class DoubleRanking(models.Model):
             return DoubleRanking.objects.get(first_player=pl_a, second_player=pl_b)
         except DoubleRanking.DoesNotExist:
             new = DoubleRanking(first_player = pl_a, second_player = pl_b)
+            new.save()
             return new
 
 class Game(models.Model):
