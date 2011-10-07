@@ -130,15 +130,33 @@ font-family: helvetica, arial, sans-serif;
 #singles .score
 {
     text-align: right;
-    padding-left: 2em;
+    padding-left: 1.6em;
     background: url(/static/images/filet1.gif) 20px 0 repeat-y;
+    -moz-font-feature-settings: "tnum=1,onum=1";
+    font-variant-numeric: oldstyle-nums,tabular-nums;
+}
+
+#singles .score .float
+{
+    width: 2.5em;
+    text-align: left;
+    display: inline-block;
 }
 
 #teams .score
 {
     text-align: left;
-    padding-right: 2em;
-    background: url(/static/images/filet1.gif) 55px 0 repeat-y;
+    padding-right: 1.5em;
+    background: url(/static/images/filet2.gif) 64px 0 repeat-y;
+    -moz-font-feature-settings: "tnum=1,onum=1";
+    font-variant-numeric: oldstyle-nums,tabular-nums;
+}
+
+#teams .score .float
+{
+    width: 23px;
+    text-align: right;
+    display: inline-block;
 }
 
 .champion .score

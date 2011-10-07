@@ -6,12 +6,26 @@ from client.models import *
 from django.contrib.auth.models import User
 import logging
 from threading import Thread
+from babel import Locale
+import babel.numbers
 
 def home(request):
     all_players = SingleRanking.objects.exclude(points=None).order_by('-points')
+    #locale = Locale(request.LANGUAGE_CODE)
+    from django.conf import settings
+    locale = Locale.parse(settings.LANGUAGE_CODE, sep='-')
+    sep = locale.number_symbols['decimal']
+    for player in all_players:
+        textpoints = babel.numbers.format_decimal(player.points, format='0.#').split(sep)
+        player.intpoints = textpoints[0]
+        player.floatpoints = sep+textpoints[1] if len(textpoints) == 2 else ''
     best_players = all_players[0:3]
     rest_players = all_players[3:]
     all_teams = DoubleRanking.objects.exclude(points=None).order_by('-points')
+    for team in all_teams:
+        textpoints = babel.numbers.format_decimal(team.points, format='0.#').split(sep)
+        team.intpoints = textpoints[0]
+        team.floatpoints = sep+textpoints[1] if len(textpoints) == 2 else ''
     best_teams = all_teams[0:3]
     rest_teams = all_teams[3:]
     return render_to_response('pages/index.html', {

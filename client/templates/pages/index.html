@@ -13,10 +13,10 @@
 {% if best_players %}
     <table>
 {% for score in best_players %}
-<tr class="champion"><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name"><a href="{% url player player_id=score.player.id %}">{{ score.player.first_name }}</a></td><td class="score">{{ score.points|floatformat }} pt</td></tr>
+<tr class="champion"><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name"><a href="{% url player player_id=score.player.id %}">{{ score.player.first_name }}</a></td><td class="score">{{ score.intpoints }}<span class="float">{{ score.floatpoints}}&nbsp;pt</span></td></tr>
 {% endfor %}
 {% for score in rest_players %}
-<tr class="player"><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name"><a href="{% url player player_id=score.player.id %}">{{ score.player.first_name }}</a></td><td class="score">{{ score.points|floatformat }} pt</td></tr>
+<tr class="player"><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name"><a href="{% url player player_id=score.player.id %}">{{ score.player.first_name }}</a></td><td class="score">{{ score.intpoints }}<span class="float">{{ score.floatpoints}}&nbsp;pt</span></td></tr>
 {% endfor %}
 </table>
 {% else %}
@@ -30,10 +30,10 @@
 {% if best_teams %}
     <table>
 {% for score in best_teams %}
-<tr class="champion"><td class="score">{{ score.points|floatformat:-1 }} pt</td><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name">{{ score }}</td></tr>
+<tr class="champion"><td class="score"><span class="float">{{ score.intpoints }}</span>{{ score.floatpoints}}&nbsp;pt</td><td class="rank rank{{ forloop.counter}}">{{ forloop.counter }}</td><td class="name">{{ score }}</td></tr>
 {% endfor %}
 {% for score in rest_teams %}
-<tr class="player"><td class="score">{{ score.points|floatformat:-1 }} pt</td><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name">{{ score }}</td></tr>
+<tr class="player"><td class="score"><span class="float">{{ score.intpoints }}</span>{{ score.floatpoints}}&nbsp;pt</td><td class="rank">{{ forloop.counter|add:3 }}</td><td class="name">{{ score }}</td></tr>
 {% endfor %}
 </table>
 {% else %}
